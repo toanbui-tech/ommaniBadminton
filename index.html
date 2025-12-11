@@ -1,1352 +1,852 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Noel Cầu Lông - Red Christmas</title>
-        <link
-            href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap"
-            rel="stylesheet"
-        />
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Christmas Badminton Quiz</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #1a4d2e 0%, #0d2818 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+            color: #fff;
+        }
+        
+        .snow {
+            position: fixed;
+            top: -10px;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 1em;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
             }
-
-            body {
-                font-family: "Poppins", sans-serif;
-                background: linear-gradient(
-                    135deg,
-                    #1a0a0a 0%,
-                    #2d0a0a 50%,
-                    #1f0505 100%
-                );
-                min-height: 100vh;
-                overflow-x: hidden;
-                color: #fff;
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 680px;
+            position: relative;
+            z-index: 2;
+            padding: 20px;
+        }
+        
+        .game-card {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            padding: 48px 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 
+                        0 0 0 1px rgba(255, 255, 255, 0.1);
+            animation: floatIn 0.6s ease-out;
+        }
+        
+        @keyframes floatIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
             }
-
-            @keyframes snowfall {
-                0% {
-                    top: -10px;
-                    opacity: 0.8;
-                }
-                90% {
-                    opacity: 0.8;
-                }
-                100% {
-                    top: 100vh;
-                    opacity: 0;
-                }
+            to {
+                opacity: 1;
+                transform: translateY(0);
             }
-
-            @keyframes glow {
-                0%,
-                100% {
-                    filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
-                }
-                50% {
-                    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
-                }
+        }
+        
+        h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8em;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #f4e4c1 0%, #daa520 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 2px 20px rgba(244, 228, 193, 0.3);
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.95em;
+            margin-bottom: 36px;
+            letter-spacing: 0.5px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            margin-bottom: 32px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #daa520, #f4e4c1);
+            border-radius: 20px;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 20px rgba(218, 165, 32, 0.5);
+        }
+        
+        .question-number {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.85em;
+            margin-bottom: 16px;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+        
+        .question-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5em;
+            font-weight: 600;
+            margin-bottom: 28px;
+            line-height: 1.5;
+            color: #fff;
+        }
+        
+        .answers {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        
+        .answer-btn {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 18px 24px;
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .answer-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(244, 228, 193, 0.1), rgba(218, 165, 32, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .answer-btn:hover {
+            transform: translateX(8px);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(244, 228, 193, 0.4);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+        
+        .answer-btn:hover::before {
+            opacity: 1;
+        }
+        
+        .answer-btn.correct {
+            background: rgba(34, 197, 94, 0.2);
+            border-color: #22c55e;
+            animation: correctGlow 0.6s ease;
+        }
+        
+        .answer-btn.wrong {
+            background: rgba(239, 68, 68, 0.2);
+            border-color: #ef4444;
+            animation: wrongShake 0.5s ease;
+        }
+        
+        @keyframes correctGlow {
+            0%, 100% { box-shadow: 0 0 0 rgba(34, 197, 94, 0); }
+            50% { box-shadow: 0 0 30px rgba(34, 197, 94, 0.6); }
+        }
+        
+        @keyframes wrongShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .reward-card {
+            text-align: center;
+            animation: rewardReveal 0.6s ease-out;
+        }
+        
+        @keyframes rewardReveal {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
             }
-
-            @keyframes sparkle {
-                0%,
-                100% {
-                    opacity: 0.3;
-                }
-                50% {
-                    opacity: 1;
-                }
+            to {
+                opacity: 1;
+                transform: scale(1);
             }
-
-            @keyframes pulse {
-                0%,
-                100% {
-                    transform: scale(1);
-                }
-                50% {
-                    transform: scale(1.05);
-                }
+        }
+        
+        .reward-image {
+            width: 240px;
+            height: 240px;
+            object-fit: cover;
+            border-radius: 24px;
+            margin: 24px auto;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+            border: 3px solid rgba(244, 228, 193, 0.3);
+            animation: sparkle 1.5s ease infinite;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { 
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3),
+                           0 0 20px rgba(244, 228, 193, 0.2);
             }
-
-            @keyframes zoomIn {
-                from {
-                    transform: scale(0.8);
-                    opacity: 0;
-                }
-                to {
-                    transform: scale(1);
-                    opacity: 1;
-                }
+            50% { 
+                box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3),
+                           0 0 40px rgba(244, 228, 193, 0.6);
             }
-
-            @keyframes bounce {
-                0%,
-                100% {
-                    transform: translateY(0);
-                }
-                50% {
-                    transform: translateY(-20px);
-                }
+        }
+        
+        .reward-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8em;
+            font-weight: 600;
+            margin: 20px 0;
+            color: #f4e4c1;
+        }
+        
+        .next-btn {
+            background: linear-gradient(135deg, #daa520, #f4e4c1);
+            border: none;
+            border-radius: 16px;
+            padding: 16px 48px;
+            color: #1a4d2e;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 24px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 24px rgba(218, 165, 32, 0.3);
+        }
+        
+        .next-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(218, 165, 32, 0.4);
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .modal-content {
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(20px);
+            border-radius: 28px;
+            padding: 48px 40px;
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            animation: modalIn 0.4s ease-out;
+        }
+        
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9) translateY(20px);
             }
-
-            @keyframes shake {
-                0%,
-                100% {
-                    transform: translateX(0);
-                }
-                25% {
-                    transform: translateX(-5px);
-                }
-                75% {
-                    transform: translateX(5px);
-                }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
             }
-
-            @keyframes slideDown {
-                from {
-                    opacity: 0;
-                    transform: translateY(-30px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
+        }
+        
+        .modal-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2em;
+            margin-bottom: 16px;
+            color: #ef4444;
+        }
+        
+        .modal-text {
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 28px;
+            font-size: 1.05em;
+            line-height: 1.6;
+        }
+        
+        .restart-btn {
+            background: linear-gradient(135deg, #991b1b, #dc2626);
+            border: none;
+            border-radius: 16px;
+            padding: 14px 40px;
+            color: #fff;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .restart-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(220, 38, 38, 0.4);
+        }
+        
+        .victory-screen {
+            text-align: center;
+            position: relative;
+        }
+        
+        .victory-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3em;
+            font-weight: 700;
+            margin-bottom: 24px;
+            background: linear-gradient(135deg, #f4e4c1, #daa520, #f4e4c1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 2s infinite;
+            background-size: 200% 100%;
+        }
+        
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+        
+        .rewards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 16px;
+            margin: 32px 0;
+        }
+        
+        .reward-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 16px;
+            animation: popIn 0.4s ease-out backwards;
+        }
+        
+        .reward-item:nth-child(1) { animation-delay: 0.1s; }
+        .reward-item:nth-child(2) { animation-delay: 0.2s; }
+        .reward-item:nth-child(3) { animation-delay: 0.3s; }
+        .reward-item:nth-child(4) { animation-delay: 0.4s; }
+        .reward-item:nth-child(5) { animation-delay: 0.5s; }
+        .reward-item:nth-child(6) { animation-delay: 0.6s; }
+        .reward-item:nth-child(7) { animation-delay: 0.7s; }
+        
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.5) rotate(-10deg);
             }
-
-            @keyframes heartbeat {
-                0%,
-                100% {
-                    transform: scale(1);
-                }
-                25% {
-                    transform: scale(1.1);
-                }
-                50% {
-                    transform: scale(1);
-                }
+            to {
+                opacity: 1;
+                transform: scale(1) rotate(0);
             }
-
-            @keyframes openGift {
-                0% {
-                    transform: rotateX(0deg) rotateY(0deg);
-                }
-                50% {
-                    transform: rotateX(20deg) rotateY(-10deg);
-                }
-                100% {
-                    transform: rotateX(45deg) rotateY(0deg);
-                }
+        }
+        
+        .reward-item img {
+            width: 100%;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .reward-item-name {
+            font-size: 0.85em;
+            color: rgba(255, 255, 255, 0.9);
+            line-height: 1.3;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #daa520;
+            position: absolute;
+            animation: confettiFall 3s linear infinite;
+        }
+        
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
             }
-
-            @keyframes slideInLeft {
-                from {
-                    opacity: 0;
-                    transform: translateX(-50px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateX(0);
-                }
+        }
+        
+        .explanation {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 24px;
+            text-align: left;
+            border-left: 4px solid #daa520;
+        }
+        
+        .explanation-title {
+            font-weight: 600;
+            color: #f4e4c1;
+            margin-bottom: 12px;
+            font-size: 1.05em;
+        }
+        
+        .explanation-text {
+            color: rgba(255, 255, 255, 0.85);
+            line-height: 1.6;
+            font-size: 0.95em;
+        }
+        
+        @media (max-width: 640px) {
+            .game-card {
+                padding: 32px 24px;
             }
-
-            .snowflake {
-                position: fixed;
-                top: -10px;
-                z-index: 1;
-                user-select: none;
-                pointer-events: none;
-                font-size: 1.5em;
-                color: rgba(255, 255, 255, 0.8);
-                animation: snowfall linear infinite;
+            
+            h1 {
+                font-size: 2.2em;
             }
-
-            .screen {
-                display: none;
-                width: 100%;
-                min-height: 100vh;
-                position: absolute;
-                top: 0;
-                left: 0;
-            }
-
-            .screen.active {
-                display: flex;
-            }
-
-            /* Intro Screen */
-            #introScreen {
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                background: linear-gradient(
-                    135deg,
-                    #1a0a0a 0%,
-                    #4d1111 50%,
-                    #1f0505 100%
-                );
-                padding: 20px;
-                animation: slideDown 0.8s ease-out;
-            }
-
-            .logo-container {
-                text-align: center;
-                margin-bottom: 40px;
-                animation: zoomIn 1s ease-out;
-            }
-
-            .logo-text {
-                font-size: 4em;
-                font-weight: 800;
-                background: linear-gradient(
-                    135deg,
-                    #ffd700 0%,
-                    #ffa500 50%,
-                    #ff4444 100%
-                );
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                margin-bottom: 20px;
-                animation: glow 2s ease-in-out infinite;
-            }
-
-            .logo-subtitle {
-                font-size: 1.5em;
-                color: #ffd700;
-                margin-bottom: 10px;
-                animation: sparkle 2s ease-in-out infinite;
-            }
-
-            .logo-description {
-                font-size: 1.1em;
-                color: rgba(255, 255, 255, 0.9);
-                margin-bottom: 50px;
-                max-width: 500px;
-                line-height: 1.6;
-                letter-spacing: 0.5px;
-            }
-
-            .start-btn {
-                padding: 16px 50px;
-                font-size: 1.2em;
-                font-weight: 700;
-                background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
-                color: white;
-                border: 3px solid #ffd700;
-                border-radius: 50px;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                box-shadow: 0 10px 30px rgba(255, 68, 68, 0.4);
-                animation: pulse 2s ease-in-out infinite;
-            }
-
-            .start-btn:hover {
-                transform: scale(1.08);
-                box-shadow: 0 15px 40px rgba(255, 215, 0, 0.6);
-                background: linear-gradient(135deg, #ff6666 0%, #ff0000 100%);
-            }
-
-            /* Quiz Screen */
-            #quizScreen {
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                padding: 40px 20px;
-                background: linear-gradient(
-                    135deg,
-                    #1a0a0a 0%,
-                    #4d1111 50%,
-                    #1f0505 100%
-                );
-            }
-
-            .quiz-container {
-                background: rgba(0, 0, 0, 0.5);
-                backdrop-filter: blur(10px);
-                border: 2px solid #ffd700;
-                border-radius: 20px;
-                padding: 40px;
-                max-width: 700px;
-                width: 100%;
-                animation: slideDown 0.6s ease-out;
-            }
-
-            .progress-bar {
-                width: 100%;
-                height: 8px;
-                background: rgba(255, 255, 255, 0.2);
-                border-radius: 10px;
-                margin-bottom: 30px;
-                overflow: hidden;
-                border: 1px solid #ffd700;
-            }
-
-            .progress-fill {
-                height: 100%;
-                background: linear-gradient(90deg, #ff4444 0%, #ffd700 100%);
-                transition: width 0.3s ease;
-                box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
-            }
-
+            
             .question-text {
-                font-size: 1.5em;
-                font-weight: 700;
-                margin-bottom: 30px;
-                color: #ffd700;
-                text-align: center;
-                line-height: 1.6;
+                font-size: 1.25em;
             }
-
-            .options-container {
-                display: grid;
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .option-btn {
-                padding: 15px 20px;
-                font-size: 1.1em;
-                font-weight: 600;
-                background: rgba(255, 255, 255, 0.1);
-                color: white;
-                border: 2px solid rgba(255, 215, 0, 0.5);
-                border-radius: 12px;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                text-align: left;
-            }
-
-            .option-btn:hover {
-                background: rgba(255, 215, 0, 0.2);
-                border-color: #ffd700;
-                transform: translateX(10px);
-            }
-
-            .option-btn.correct {
-                animation: heartbeat 0.6s ease;
-                background: linear-gradient(135deg, #44ff44 0%, #00cc00 100%);
-                border-color: #00ff00;
-                color: white;
-            }
-
-            .option-btn.incorrect {
-                animation: shake 0.4s ease;
-                background: linear-gradient(135deg, #ff6666 0%, #cc0000 100%);
-                border-color: #ff0000;
-            }
-
-            .quiz-counter {
-                text-align: center;
-                margin-top: 30px;
-                color: rgba(255, 215, 0, 0.8);
-                font-size: 1.1em;
-                font-weight: 600;
-            }
-
-            /* Gift Screen */
-            #giftScreen {
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                padding: 40px 20px;
-                background: linear-gradient(
-                    135deg,
-                    #1a0a0a 0%,
-                    #4d1111 50%,
-                    #1f0505 100%
-                );
-                min-height: 100vh;
-            }
-
-            .gift-container {
-                text-align: center;
-                animation: zoomIn 0.6s ease-out;
-            }
-
-            .gift-title {
-                font-size: 2.5em;
-                font-weight: 800;
-                color: #ffd700;
-                margin-bottom: 30px;
-                animation: glow 2s ease-in-out infinite;
-            }
-
-            .gift-box {
+            
+            .reward-image {
                 width: 200px;
                 height: 200px;
-                margin: 30px auto;
-                background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
-                border: 4px solid #ffd700;
-                border-radius: 20px;
-                position: relative;
-                cursor: pointer;
-                animation: bounce 1.5s ease-in-out infinite;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 5em;
-                transition: all 0.3s ease;
-                box-shadow: 0 20px 50px rgba(255, 68, 68, 0.5);
             }
-
-            .gift-box:hover {
-                transform: scale(1.1);
-                box-shadow: 0 30px 70px rgba(255, 215, 0, 0.6);
+            
+            .victory-title {
+                font-size: 2.2em;
             }
-
-            .gift-box.opened {
-                animation: openGift 0.8s ease-out;
-                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
+            
+            .rewards-grid {
+                grid-template-columns: repeat(2, 1fr);
             }
-
-            .gift-content {
-                display: none;
-                text-align: center;
-                animation: zoomIn 0.8s ease-out;
-            }
-
-            .gift-content.show {
-                display: block;
-            }
-
-            .gift-image {
-                width: 300px;
-                height: 300px;
-                margin: 20px auto;
-                background: rgba(255, 255, 255, 0.1);
-                border: 3px solid #ffd700;
-                border-radius: 15px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                animation: zoomIn 0.8s ease-out;
-                box-shadow: 0 10px 40px rgba(255, 215, 0, 0.3);
-                object-fit: cover;
-                overflow: hidden;
-            }
-
-            .gift-image img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-                border-radius: 12px;
-            }
-
-            .gift-description {
-                font-size: 1.3em;
-                color: #ffd700;
-                margin-top: 20px;
-                font-weight: 700;
-            }
-
-            .gift-tagline {
-                font-size: 1em;
-                color: rgba(255, 255, 255, 0.8);
-                margin-top: 10px;
-                font-style: italic;
-            }
-
-            .next-btn {
-                padding: 14px 40px;
-                margin-top: 30px;
-                font-size: 1.1em;
-                font-weight: 700;
-                background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
-                color: white;
-                border: 2px solid #ffd700;
-                border-radius: 50px;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                box-shadow: 0 10px 30px rgba(255, 68, 68, 0.4);
-            }
-
-            .next-btn:hover {
-                transform: scale(1.08);
-                box-shadow: 0 15px 40px rgba(255, 215, 0, 0.6);
-            }
-
-            /* Warning Screen */
-            #warningScreen {
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                padding: 40px 20px;
-                background: linear-gradient(
-                    135deg,
-                    #1a0a0a 0%,
-                    #4d1111 50%,
-                    #1f0505 100%
-                );
-                animation: slideDown 0.6s ease-out;
-            }
-
-            .warning-container {
-                background: rgba(0, 0, 0, 0.6);
-                backdrop-filter: blur(10px);
-                border: 3px solid #ffd700;
-                border-radius: 20px;
-                padding: 50px;
-                max-width: 600px;
-                text-align: center;
-            }
-
-            .warning-title {
-                font-size: 2.5em;
-                font-weight: 800;
-                color: #ff4444;
-                margin-bottom: 30px;
-                animation: glow 1.5s ease-in-out infinite;
-            }
-
-            .warning-text {
-                font-size: 1.3em;
-                color: rgba(255, 255, 255, 0.9);
-                margin-bottom: 20px;
-                line-height: 1.8;
-            }
-
-            .warning-question {
-                font-size: 1.5em;
-                color: #ffd700;
-                font-weight: 700;
-                margin: 30px 0;
-            }
-
-            .warning-buttons {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 20px;
-                margin-top: 30px;
-            }
-
-            .warning-btn {
-                padding: 15px 30px;
-                font-size: 1.1em;
-                font-weight: 700;
-                border: 2px solid #ffd700;
-                border-radius: 50px;
-                cursor: pointer;
-                transition: all 0.3s ease;
-            }
-
-            .btn-continue {
-                background: linear-gradient(135deg, #44ff44 0%, #00cc00 100%);
-                color: white;
-            }
-
-            .btn-continue:hover {
-                transform: scale(1.08);
-                box-shadow: 0 10px 30px rgba(68, 255, 68, 0.4);
-            }
-
-            .btn-stop {
-                background: linear-gradient(135deg, #ff6666 0%, #cc0000 100%);
-                color: white;
-            }
-
-            .btn-stop:hover {
-                transform: scale(1.08);
-                box-shadow: 0 10px 30px rgba(255, 68, 68, 0.4);
-            }
-
-            /* Final Reward Screen */
-            #finalRewardScreen {
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                padding: 40px 20px;
-                background: linear-gradient(
-                    135deg,
-                    #1a0a0a 0%,
-                    #4d1111 50%,
-                    #1f0505 100%
-                );
-                min-height: 100vh;
-            }
-
-            .finale-title {
-                font-size: 3em;
-                font-weight: 800;
-                background: linear-gradient(
-                    135deg,
-                    #ffd700 0%,
-                    #ffa500 50%,
-                    #ff4444 100%
-                );
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                margin-bottom: 40px;
-                text-align: center;
-                animation: glow 2s ease-in-out infinite;
-            }
-
-            .finale-subtitle {
-                font-size: 1.8em;
-                color: #ffd700;
-                margin-bottom: 40px;
-                animation: sparkle 2s ease-in-out infinite;
-            }
-
-            .epic-gift-box {
-                width: 280px;
-                height: 280px;
-                background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
-                border: 5px solid #ffd700;
-                border-radius: 25px;
-                position: relative;
-                cursor: pointer;
-                animation:
-                    bounce 1.5s ease-in-out infinite,
-                    glow 2s ease-in-out infinite;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                font-size: 8em;
-                margin: 30px auto;
-                box-shadow:
-                    0 30px 80px rgba(255, 68, 68, 0.6),
-                    0 0 40px rgba(255, 215, 0, 0.4);
-                transition: all 0.3s ease;
-            }
-
-            .epic-gift-box:hover {
-                transform: scale(1.15);
-                box-shadow:
-                    0 40px 100px rgba(255, 215, 0, 0.8),
-                    0 0 60px rgba(255, 215, 0, 0.5);
-            }
-
-            .epic-gift-box.opened {
-                animation:
-                    openGift 1s ease-out,
-                    glow 2s ease-in-out infinite;
-                background: linear-gradient(135deg, #ffd700 0%, #ffa500 100%);
-            }
-
-            .epic-content {
-                display: none;
-                text-align: center;
-                animation: zoomIn 1s ease-out;
-                max-width: 600px;
-            }
-
-            .epic-content.show {
-                display: block;
-            }
-
-            .final-image {
-                width: 400px;
-                height: 300px;
-                margin: 30px auto;
-                background: linear-gradient(135deg, #ff6b6b 0%, #ffd700 100%);
-                border: 4px solid #ffd700;
-                border-radius: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                animation: zoomIn 0.8s ease-out;
-                box-shadow: 0 20px 60px rgba(255, 215, 0, 0.5);
-                object-fit: cover;
-                overflow: hidden;
-            }
-
-            .final-image img {
-                width: 100%;
-                height: 100%;
-                object-fit: cover;
-            }
-
-            .final-description {
-                font-size: 1.5em;
-                color: #ffd700;
-                margin: 30px 0;
-                font-weight: 800;
-                line-height: 1.6;
-            }
-
-            .final-text {
-                font-size: 1.2em;
-                color: rgba(255, 255, 255, 0.9);
-                margin-top: 20px;
-                line-height: 1.8;
-            }
-
-            .upload-section {
-                margin-top: 40px;
-                padding: 30px;
-                background: rgba(255, 255, 255, 0.1);
-                border: 2px solid #ffd700;
-                border-radius: 15px;
-                backdrop-filter: blur(10px);
-            }
-
-            .upload-title {
-                font-size: 1.5em;
-                color: #ffd700;
-                margin-bottom: 20px;
-                font-weight: 700;
-            }
-
-            .upload-input {
-                display: none;
-            }
-
-            .upload-btn {
-                padding: 12px 30px;
-                font-size: 1.1em;
-                font-weight: 700;
-                background: linear-gradient(135deg, #44ff44 0%, #00cc00 100%);
-                color: white;
-                border: 2px solid #00ff00;
-                border-radius: 50px;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                margin: 10px;
-            }
-
-            .upload-btn:hover {
-                transform: scale(1.08);
-                box-shadow: 0 10px 30px rgba(68, 255, 68, 0.4);
-            }
-
-            .custom-image {
-                width: 300px;
-                height: 300px;
-                object-fit: cover;
-                border-radius: 15px;
-                border: 3px solid #ffd700;
-                margin-top: 20px;
-                animation: zoomIn 0.6s ease-out;
-            }
-
-            /* Celebration Screen */
-            #celebrationScreen {
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                padding: 40px 20px;
-                background: linear-gradient(
-                    135deg,
-                    #1a0a0a 0%,
-                    #4d1111 50%,
-                    #1f0505 100%
-                );
-            }
-
-            .celebration-text {
-                font-size: 3.5em;
-                font-weight: 800;
-                background: linear-gradient(
-                    135deg,
-                    #ffd700 0%,
-                    #ffa500 50%,
-                    #ff4444 100%
-                );
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
-                background-clip: text;
-                text-align: center;
-                margin-bottom: 40px;
-                animation: glow 1.5s ease-in-out infinite;
-            }
-
-            .celebration-subtext {
-                font-size: 2em;
-                margin-top: 20px;
-                color: rgba(255, 255, 255, 0.9);
-            }
-
-            .restart-btn {
-                padding: 16px 50px;
-                font-size: 1.2em;
-                font-weight: 700;
-                background: linear-gradient(135deg, #ff4444 0%, #cc0000 100%);
-                color: white;
-                border: 3px solid #ffd700;
-                border-radius: 50px;
-                cursor: pointer;
-                transition: all 0.3s ease;
-                box-shadow: 0 10px 30px rgba(255, 68, 68, 0.4);
-                margin-top: 40px;
-            }
-
-            .restart-btn:hover {
-                transform: scale(1.08);
-                box-shadow: 0 15px 40px rgba(255, 215, 0, 0.6);
-            }
-
-            /* Failed Screen */
-            #failedScreen {
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-                padding: 40px 20px;
-                background: linear-gradient(
-                    135deg,
-                    #1a0a0a 0%,
-                    #4d1111 50%,
-                    #1f0505 100%
-                );
-            }
-
-            .failed-container {
-                background: rgba(0, 0, 0, 0.6);
-                backdrop-filter: blur(10px);
-                border: 3px solid #ff4444;
-                border-radius: 20px;
-                padding: 50px;
-                max-width: 600px;
-                text-align: center;
-                animation: slideDown 0.6s ease-out;
-            }
-
-            .failed-title {
-                font-size: 2.5em;
-                font-weight: 800;
-                color: #ff4444;
-                margin-bottom: 20px;
-                animation: shake 0.5s ease;
-            }
-
-            .failed-subtitle {
-                font-size: 1.5em;
-                color: #ffd700;
-                margin-bottom: 30px;
-            }
-
-            .failed-text {
-                font-size: 1.2em;
-                color: rgba(255, 255, 255, 0.8);
-                margin-bottom: 20px;
-                line-height: 1.8;
-            }
-
-            .failed-rewards {
-                background: rgba(255, 215, 0, 0.1);
-                border: 2px solid #ffd700;
-                border-radius: 15px;
-                padding: 20px;
-                margin: 20px 0;
-            }
-
-            .failed-rewards-title {
-                font-size: 1.3em;
-                color: #ffd700;
-                font-weight: 700;
-                margin-bottom: 15px;
-            }
-
-            .failed-rewards-list {
-                font-size: 1.1em;
-                color: rgba(255, 255, 255, 0.9);
-                line-height: 2;
-            }
-
-            .container {
-                position: relative;
-                width: 100%;
-                min-height: 100vh;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <!-- Intro Screen -->
-            <div id="introScreen" class="screen active">
-                <div class="logo-container">
-                    <div class="logo-text">Noel</div>
-                    <div class="logo-subtitle">RED CHRISTMAS CHALLENGE</div>
-                    <div class="logo-description">
-                        Hành trình đặc biệt chào đón mùa lễ hội.<br />
-                        Trả lời 10 câu hỏi về thể thao cầu lông,<br />
-                        Mở khám phá những hộp quà tuyệt vời!
-                    </div>
-                </div>
-                <button class="start-btn" onclick="startQuiz()">
-                    Bắt Đầu Thử Thách
-                </button>
-            </div>
-
-            <!-- Quiz Screen -->
-            <div id="quizScreen" class="screen">
-                <div class="quiz-container">
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressFill"></div>
-                    </div>
-                    <div class="question-text" id="questionText"></div>
-                    <div class="options-container" id="optionsContainer"></div>
-                    <div class="quiz-counter" id="quizCounter"></div>
-                </div>
-            </div>
-
-            <!-- Gift Screen -->
-            <div id="giftScreen" class="screen">
-                <div class="gift-container">
-                    <div class="gift-title">Hộp Quà May Mắn</div>
-                    <div class="gift-box" id="giftBox" onclick="openGift()">
-                        🎁
-                    </div>
-                    <div class="gift-content" id="giftContent">
-                        <div class="gift-image" id="giftImage"></div>
-                        <div
-                            class="gift-description"
-                            id="giftDescription"
-                        ></div>
-                        <div class="gift-tagline" id="giftTagline"></div>
-                        <button class="next-btn" onclick="nextQuestion()">
-                            Tiếp Tục
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Warning Screen (câu 6+) -->
-            <div id="warningScreen" class="screen">
-                <div class="warning-container">
-                    <div class="warning-title">CẢNH BÁO!</div>
-                    <div class="warning-text">
-                        Từ câu hỏi này trở đi, những phần thưởng sẽ có giá trị
-                        vô cùng lớn.
-                    </div>
-                    <div class="warning-text">
-                        Nếu bạn trả lời sai, bạn sẽ mất toàn bộ những phần
-                        thưởng đã nhận trước đó!
-                    </div>
-                    <div class="warning-question">
-                        Bạn có dũng cảm để tiếp tục không?
-                    </div>
-                    <div class="warning-buttons">
-                        <button
-                            class="warning-btn btn-continue"
-                            onclick="confirmContinue()"
-                        >
-                            Tiếp Đi
-                        </button>
-                        <button
-                            class="warning-btn btn-stop"
-                            onclick="showFinalRewardWithWarning()"
-                        >
-                            Dừng Lại
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Final Reward Screen -->
-            <div id="finalRewardScreen" class="screen">
-                <div class="finale-title">PHẦN THƯỞNG CÓ TRONG MƠ!</div>
-                <div class="finale-subtitle">
-                    Bạn đã hoàn thành! Đây là quà vô cùng đặc biệt...
-                </div>
-                <div
-                    class="epic-gift-box"
-                    id="epicGiftBox"
-                    onclick="openEpicGift()"
-                >
-                    🎁
-                </div>
-                <div class="epic-content" id="epicContent">
-                    <div class="final-image" id="finalImage"></div>
-                    <div class="final-description" id="finalDescription"></div>
-                    <div class="final-text" id="finalText"></div>
-                    <div class="upload-section">
-                        <div class="upload-title">
-                            Thay Thế Bằng Ảnh Của Bạn (Tuỳ Chọn)
-                        </div>
-                        <input
-                            type="file"
-                            id="imageUpload"
-                            class="upload-input"
-                            accept="image/*"
-                            onchange="displayCustomImage()"
-                        />
-                        <button
-                            class="upload-btn"
-                            onclick="
-                                document.getElementById('imageUpload').click()
-                            "
-                        >
-                            Chọn Ảnh
-                        </button>
-                        <div id="customImageContainer"></div>
-                    </div>
-                    <button class="next-btn" onclick="goToCelebration()">
-                        Hoàn Thành
-                    </button>
-                </div>
-            </div>
-
-            <!-- Failed Screen -->
-            <div id="failedScreen" class="screen">
-                <div class="failed-container">
-                    <div class="failed-title">Trả Lời Sai!</div>
-                    <div class="failed-subtitle">
-                        Nhưng bạn vẫn là một nhà vô địch!
-                    </div>
-                    <div class="failed-text">
-                        Bạn không thể tiếp tục, nhưng những phần thưởng bạn đã
-                        nhận là của bạn rồi.
-                    </div>
-                    <div class="failed-rewards">
-                        <div class="failed-rewards-title">
-                            Các Phần Thưởng Của Bạn:
-                        </div>
-                        <div
-                            class="failed-rewards-list"
-                            id="collectedRewards"
-                        ></div>
-                    </div>
-                    <button class="restart-btn" onclick="resetApp()">
-                        Chơi Lại
-                    </button>
-                </div>
-            </div>
-
-            <!-- Celebration Screen -->
-            <div id="celebrationScreen" class="screen">
-                <div class="celebration-text">CHÚC MỪNG!</div>
-                <div
-                    style="
-                        font-size: 6em;
-                        animation: bounce 1s ease-in-out infinite;
-                        margin: 20px;
-                    "
-                >
-                    🎉
-                </div>
-                <div
-                    class="celebration-text"
-                    style="font-size: 2em; margin-top: 20px"
-                >
-                    Bạn là nhà vô địch thử thách!
-                </div>
-                <button class="restart-btn" onclick="resetApp()">
-                    Chơi Lại
-                </button>
-            </div>
+        }
+    </style>
+</head>
+<body>
+    <div class="snow"></div>
+    <div class="container">
+        <div class="game-card" id="gameCard"></div>
+    </div>
+    
+    <div class="modal" id="loseModal">
+        <div class="modal-content">
+            <div class="modal-title">🎄 Ôi không!</div>
+            <div class="modal-text">Bạn đã mất tất cả phần thưởng! Đừng lo, hãy thử lại và chinh phục tất cả câu hỏi nhé! 🎁</div>
+            <button class="restart-btn" onclick="restartGame()">Chơi lại</button>
         </div>
-
-        <script>
-            const questions = [
-                {
-                    question:
-                        "Chiều dài tiêu chuẩn của sân cầu lông là bao nhiêu?",
-                    options: ["17m", "20m", "24m", "30m"],
-                    correct: 1,
-                    image: "https://shopvnb.com/uploads/tin_tuc/qua-cau-long-phu-kien-noi-bat-va-tinh-te-nhat-cua-cau-long-1.jpg",
-                    description: "Quả Cầu Lông Hải Yến Siêu Bền",
-                    tagline: "Độ bật tuyệt vời, bay xa hơn mong đợi",
-                },
-                {
-                    question:
-                        "Điểm để thắng một ván cầu lông tiêu chuẩn là bao nhiêu?",
-                    options: ["15 điểm", "19 điểm", "21 điểm", "25 điểm"],
-                    correct: 2,
-                    image: "https://bizweb.dktcdn.net/100/078/144/products/quan-can-vot-yonex-102-ex-3in1-nhieu-mau-2.jpg?v=1742788206560",
-                    description: "Quấn Cán Yonex 102EX - 30in1",
-                    tagline:
-                        "Cảm giác cầm vợt tuyệt vời, kiểm soát từng cú đánh",
-                },
-                {
-                    question:
-                        "Trọng lượng chutle (quả cầu) tiêu chuẩn là bao nhiêu gram?",
-                    options: ["3-5g", "4-5g", "6-7g", "8-10g"],
-                    correct: 1,
-                    image: "https://shopvnb.com/uploads/tin_tuc/qua-cau-long-phu-kien-noi-bat-va-tinh-te-nhat-cua-cau-long-1.jpg",
-                    description: "Quả Cầu Lông Hải Yến",
-                    tagline: "Quả chutle chuẩn quốc tế, bay ổn định",
-                },
-                {
-                    question: "Những nước nào tham gia giải cầu lông Olympic?",
-                    options: [
-                        "Chỉ 5 nước",
-                        "Chỉ 10 nước",
-                        "Hơn 30 nước",
-                        "Hơn 100 nước",
-                    ],
-                    correct: 2,
-                    image: "https://cdn.shopvnb.com/uploads/images/thay-gen-vot-cau-long-2.webp",
-                    description: "Gen Vợt Cầu Lông",
-                    tagline: "Tăng cường độ bền vợt, chơi dài lâu",
-                },
-                {
-                    question:
-                        "Chiều cao lưới cầu lông tiêu chuẩn ở giữa sân là bao nhiêu?",
-                    options: ["1.55m", "1.67m", "1.73m", "1.80m"],
-                    correct: 1,
-                    image: "https://shopvnb.com//uploads/san_pham/day-cuoc-cang-vot-yonex-bg-exbolt-65-1.webp",
-                    description: "Lưới Vợt Cầu Lông Yonex BG EXBOLT 65",
-                    tagline:
-                        "Độ căng hoàn hảo, cảm giác đánh bóng vô cùng nhạy",
-                },
-            ];
-
-            const highValueQuestions = [
-                {
-                    question: "Người sáng lập môn cầu lông hiện đại là ai?",
-                    options: [
-                        "Từ Trung Quốc",
-                        "Từ Anh (Badminton, Gloucestershire)",
-                        "Từ Ấn Độ",
-                        "Từ Nhật Bản",
-                    ],
-                    correct: 1,
-                    image: "https://cdn.shopvnb.com/uploads/images/bang-tran-cau-long-yonex-75th-ac258ex-do.webp",
-                    description: "Băng Trán Cầu Lông Yonex 75th AC258EX - Đỏ",
-                    tagline: "Giúp cân bằng mồ hôi, focus tối đa vào từng điểm",
-                },
-                {
-                    question:
-                        "Lee Chong Wei là huyền thoại cầu lông đến từ nước nào?",
-                    options: ["Singapore", "Malaysia", "Indonesia", "Thái Lan"],
-                    correct: 1,
-                    image: "https://shopvnb.com//uploads/gallery/bang-co-tay-yonex-mps60-r-chinh-hang.webp",
-                    description: "Băng Cổ Tay Yonex MPS60-R Chính Hãng",
-                    tagline: "Hỗ trợ cổ tay, chơi liên tục không mệt",
-                },
-                {
-                    question:
-                        "Nước Trung Quốc giành được bao nhiêu huy chương vàng cầu lông tại Olympics gần nhất?",
-                    options: ["2", "3", "4", "5"],
-                    correct: 2,
-                    image: "https://lh3.googleusercontent.com/gg-dl/ABS2GSnSkBmbP2-jw-ybYnBSCoo6s-pskFvOvnYhjiCcZ9oBXwtq65yKK-BFm3_1F-mzAYGJccy6ow5ZsgpG6DbTkmvJLmT4nAoTOwNwfWrDf-rYZ6_DNx1htmNO942WuLOBEhecTyEHIvQ_4p5k3tf48XyArSuPey70pBJQjo0gaOph054_QA=s1024-rj",
-                    description: "Bộ Quần Áo Đánh Cầu Lông Chủ Đề Giáng Sinh",
-                    tagline: "Thoải mái, tự tin, sẵn sàng chinh phục sân cỏ",
-                },
-                {
-                    question:
-                        "Số người chơi trong một trận đôi nam là bao nhiêu?",
-                    options: ["2 người", "3 người", "4 người", "6 người"],
-                    correct: 0,
-                    image: "https://cdn.shopvnb.com/uploads/gallery/vot-cau-long-victor-tk-ryuga-metallic-chinh-hang_1702259879.webp",
-                    description: "Vợt Cầu Lông Victor TK-Ryuga Metallic",
-                    tagline: "Cho những cú đập như búa bổ vào sân đối thủ",
-                },
-                {
-                    question:
-                        "Trong 10 năm gần đây, Việt Nam có cầu thủ nào vào top 50 ranking thế giới?",
-                    options: [
-                        "Không",
-                        "Có 1 người",
-                        "Có 2 người",
-                        "Có 3 người",
-                    ],
-                    correct: 1,
-                    image: "https://cdn.shopvnb.com/uploads/san_pham/vot-cau-long-yonex-astrox-100zz-kurenai-do-new-2021-5.webp",
-                    description: "Vợt Cầu Lông Yonex Astrox 100ZZ Kurenai",
-                    tagline:
-                        "Vợt của những champion, cân bằng hoàn hảo giữa tấc công và phòng thủ",
-                },
-            ];
-
-            let currentQuestion = 0;
-            let collectedRewards = [];
-            let passedWarning = false;
-
-            function startQuiz() {
-                currentQuestion = 0;
-                collectedRewards = [];
-                passedWarning = false;
-                showScreen("quizScreen");
-                loadQuestion();
+    </div>
+    
+    <script>
+        const REWARDS = [
+            {
+                "reward_level": 1,
+                "name": "Bộ cầu lông – shuttlecock",
+                "image": "https://cdn.shopvnb.com/uploads/san_pham/vot-cau-long-yonex-astrox-100zz-kurenai-do-new-2021-5.webp"
+            },
+            {
+                "reward_level": 2,
+                "name": "Vợt cầu lông cổ điển (Vintage)",
+                "image": "https://cdn.shopvnb.com/uploads/san_pham/vot-cau-long-yonex-astrox-100zz-kurenai-do-new-2021-5.webp"
+            },
+            {
+                "reward_level": 3,
+                "name": "Quả cầu lông cao cấp",
+                "image": "https://cdn.shopvnb.com/uploads/san_pham/vot-cau-long-yonex-astrox-100zz-kurenai-do-new-2021-5.webp"
+            },
+            {
+                "reward_level": 4,
+                "name": "Áo cầu lông thể thao (Yonex)",
+                "image": "https://cdn.shopvnb.com/uploads/san_pham/vot-cau-long-yonex-astrox-100zz-kurenai-do-new-2021-5.webp"
+            },
+            {
+                "reward_level": 5,
+                "name": "Áo cầu lông chính hãng cao cấp",
+                "image": "https://cdn.shopvnb.com/uploads/san_pham/vot-cau-long-yonex-astrox-100zz-kurenai-do-new-2021-5.webp"
+            },
+            {
+                "reward_level": 6,
+                "name": "Tượng Cúp Cầu Lông",
+                "image": "https://cdn.shopvnb.com/uploads/san_pham/vot-cau-long-yonex-astrox-100zz-kurenai-do-new-2021-5.webp"
+            },
+            {
+                "reward_level": 7,
+                "name": "Kỷ niệm chương Cầu Lông",
+                "image": "https://cdn.shopvnb.com/uploads/san_pham/vot-cau-long-yonex-astrox-100zz-kurenai-do-new-2021-5.webp"
             }
-
-            function loadQuestion() {
-                const q = getCurrentQuestion();
-                document.getElementById("questionText").textContent =
-                    `Câu ${currentQuestion + 1}: ${q.question}`;
-                document.getElementById("quizCounter").textContent =
-                    `${currentQuestion + 1} / 10`;
-
-                const progress = ((currentQuestion + 1) / 10) * 100;
-                document.getElementById("progressFill").style.width =
-                    progress + "%";
-
-                const optionsContainer =
-                    document.getElementById("optionsContainer");
-                optionsContainer.innerHTML = "";
-
-                q.options.forEach((option, index) => {
-                    const btn = document.createElement("button");
-                    btn.className = "option-btn";
-                    btn.textContent = option;
-                    btn.onclick = () => selectAnswer(index);
-                    optionsContainer.appendChild(btn);
-                });
-            }
-
-            function getCurrentQuestion() {
-                if (currentQuestion < 5) {
-                    return questions[currentQuestion];
-                } else {
-                    return highValueQuestions[currentQuestion - 5];
+        ];
+        
+        const QUESTIONS = [
+            {
+                "question": "Kích thước chuẩn của sân cầu lông đánh đơn theo luật BWF là bao nhiêu?",
+                "A": "3.96m × 13.4m",
+                "B": "5.18m × 13.4m",
+                "C": "6.10m × 13.4m",
+                "D": "4.88m × 13.4m",
+                "correct": "B",
+                "explain": {
+                    "A": "Sai — 3.96m là chiều rộng của sân đôi tính theo nửa sân, không phải sân đơn.",
+                    "B": "Đúng — Sân đơn có chiều rộng 5.18m và chiều dài 13.4m.",
+                    "C": "Sai — 6.10m là chiều rộng của sân đôi, không phải sân đơn.",
+                    "D": "Sai — Không có kích thước sân nào theo chuẩn BWF là 4.88m × 13.4m."
+                }
+            },
+            {
+                "question": "Chiều cao lưới cầu lông ở cột lưới theo tiêu chuẩn là bao nhiêu?",
+                "A": "1.50m",
+                "B": "1.55m",
+                "C": "1.60m",
+                "D": "1.52m",
+                "correct": "B",
+                "explain": {
+                    "A": "Sai — Không có chiều cao tiêu chuẩn nào là 1.50m.",
+                    "B": "Đúng — Chiều cao cột lưới chuẩn là 1.55m.",
+                    "C": "Sai — Quá cao so với luật thi đấu.",
+                    "D": "Sai — Gần đúng nhưng vẫn sai, chuẩn phải là 1.55m."
+                }
+            },
+            {
+                "question": "Quả giao cầu được tính hợp lệ khi nào?",
+                "A": "Mặt vợt tiếp xúc cầu khi vợt đang ở dưới hông người giao.",
+                "B": "Người giao cầu có thể bật nhảy nhẹ khi giao.",
+                "C": "Giao cầu cao qua đầu để tạo đường cầu sâu.",
+                "D": "Giao cầu chạm lưới và rơi sang sân đối phương thì vẫn lỗi.",
+                "correct": "A",
+                "explain": {
+                    "A": "Đúng — Luật yêu cầu điểm tiếp xúc cầu phải dưới hông.",
+                    "B": "Sai — Người giao phải đứng cố định, không được nhảy.",
+                    "C": "Sai — Giao cao qua đầu là phạm luật.",
+                    "D": "Sai — Nếu cầu chạm lưới rồi rơi đúng sang sân đối phương, giao cầu vẫn hợp lệ."
+                }
+            },
+            {
+                "question": "Trong đánh đôi, người chơi được phép:",
+                "A": "Cản tầm nhìn của đối thủ bằng cách vung vợt rộng.",
+                "B": "Đánh cầu khi cầu đang ở bên phía đối tác (đập chéo đầu).",
+                "C": "Đứng bất kỳ vị trí nào miễn là không gây cản trở.",
+                "D": "Chạm lưới bằng người nhưng không chạm bằng vợt.",
+                "correct": "C",
+                "explain": {
+                    "A": "Sai — Cản tầm nhìn cố ý là lỗi.",
+                    "B": "Sai — Không được với tay qua lưới hoặc đánh cầu khi chưa sang phần sân mình.",
+                    "C": "Đúng — Vị trí đứng tự do miễn không cản trở đối thủ.",
+                    "D": "Sai — Chạm lưới bằng bất kỳ bộ phận nào đều lỗi."
+                }
+            },
+            {
+                "question": "Cầu thi đấu tiêu chuẩn phải có bao nhiêu lông?",
+                "A": "14–16 lông",
+                "B": "12–14 lông",
+                "C": "16 lông",
+                "D": "20 lông",
+                "correct": "C",
+                "explain": {
+                    "A": "Sai — Không đúng theo tiêu chuẩn.",
+                    "B": "Sai — Không có cầu tiêu chuẩn nào 12–14 lông.",
+                    "C": "Đúng — Cầu chuẩn phải có 16 lông.",
+                    "D": "Sai — Quá nhiều so với tiêu chuẩn."
+                }
+            },
+            {
+                "question": "Điểm số tối đa trong một set thi đấu là bao nhiêu?",
+                "A": "21 điểm",
+                "B": "29 điểm",
+                "C": "30 điểm",
+                "D": "25 điểm",
+                "correct": "C",
+                "explain": {
+                    "A": "Sai — 21 là điểm thắng thông thường, nhưng có luật 'win by 2'.",
+                    "B": "Sai — 29 không phải điểm tối đa, vì luật cho đến 30.",
+                    "C": "Đúng — Nếu hai bên hòa 29–29, ai ghi điểm 30 sẽ thắng set.",
+                    "D": "Sai — Không có mốc 25 điểm trong luật BWF."
+                }
+            },
+            {
+                "question": "Trong tình huống rally, đâu là lỗi 'double hit'?",
+                "A": "Cầu chạm vào vợt 2 lần liên tiếp trong cùng một cú đánh.",
+                "B": "Hai người trong đôi chạm cầu liền nhau trước khi cầu qua lưới.",
+                "C": "Cầu chạm vào tay cầm vợt.",
+                "D": "Cầu chạm vào lưới rồi chạm người.",
+                "correct": "A",
+                "explain": {
+                    "A": "Đúng — Double hit là lỗi khi vợt chạm cầu 2 lần trong 1 cú đánh.",
+                    "B": "Sai — Hai người trong đội có thể luân phiên, miễn không chạm liên tiếp trong cùng một cú đánh.",
+                    "C": "Sai — Cầu chạm vào tay cầm vợt vẫn hợp lệ.",
+                    "D": "Sai — Đây là lỗi chạm người, không phải double hit."
+                }
+            },
+            {
+                "question": "Trong giao cầu đôi, ai là người quyết định vị trí đứng?",
+                "A": "Chỉ người giao cầu.",
+                "B": "Chỉ người nhận cầu.",
+                "C": "Cả hai bên tự do đứng trong phần sân của họ.",
+                "D": "Trọng tài phân chia vị trí đứng.",
+                "correct": "C",
+                "explain": {
+                    "A": "Sai — Không có luật yêu cầu người giao phải quyết định.",
+                    "B": "Sai — Người nhận cũng không có đặc quyền này.",
+                    "C": "Đúng — Miễn không cản trở đối thủ, cả hai đội được tự do đứng.",
+                    "D": "Sai — Trọng tài không can thiệp vị trí đứng trừ khi vi phạm."
+                }
+            },
+            {
+                "question": "Trong đánh đơn, khi điểm số là chẵn, người chơi giao cầu từ đâu?",
+                "A": "Từ ô bên phải.",
+                "B": "Từ ô bên trái.",
+                "C": "Đứng ở giữa sân tuỳ ý.",
+                "D": "Không có quy tắc nào về chẵn/lẻ.",
+                "correct": "A",
+                "explain": {
+                    "A": "Đúng — Điểm chẵn giao từ ô bên phải.",
+                    "B": "Sai — Ô trái dành cho điểm lẻ.",
+                    "C": "Sai — Vị trí giao cầu phải trong ô quy định.",
+                    "D": "Sai — Luật BWF có quy định rõ chẵn/lẻ."
+                }
+            },
+            {
+                "question": "Một pha cầu được tính 'in' khi nào?",
+                "A": "Khi bất kỳ phần nào của quả cầu chạm vào vạch biên.",
+                "B": "Khi phần lông cầu chạm đất.",
+                "C": "Khi bất kỳ phần nào của thân cầu chạm ra ngoài sân.",
+                "D": "Khi trọng tài không nhìn rõ và cho đánh lại.",
+                "correct": "A",
+                "explain": {
+                    "A": "Đúng — Chỉ cần chạm vạch là tính trong.",
+                    "B": "Sai — Phần tiếp đất hợp lệ phải là đế cầu (feather chạm đất không xác định điểm).",
+                    "C": "Sai — Nếu chạm ngoài sân thì lỗi out.",
+                    "D": "Sai — Trọng tài chỉ cho đánh lại nếu bị cản trở hoặc sự cố, không phải vì 'không rõ'."
                 }
             }
-
-            function selectAnswer(index) {
-                const q = getCurrentQuestion();
-                const buttons = document.querySelectorAll(".option-btn");
-
-                buttons.forEach((btn) => (btn.disabled = true));
-
-                if (index === q.correct) {
-                    buttons[index].classList.add("correct");
-                    collectedRewards.push({
-                        question: currentQuestion + 1,
-                        name: q.description,
-                    });
-                    setTimeout(() => showGiftScreen(), 1000);
-                } else {
-                    buttons[index].classList.add("incorrect");
-                    setTimeout(() => {
-                        showFailed();
-                    }, 2000);
-                }
+        ];
+        
+        // Sound effects (base64)
+        const correctSound = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIHGu98+ifUAwNUKXh8LljHQU2jdXxyHYpBSh+zPDcjT0JD1q48OyrWBELTKXh8sNjIQUrhM/z24k2CBlqvPTon1AMDlCl4fC5Yx0FOJHW8chwKAUle8vw3I0+CQ9buvDtq1gRC0yl4PLCYyAFLITP8tuJNQgZarzy6J9QDA5PpOHvuGMcBTiP1fHHdSYFKHvJ79yNPQgPW7rw7atXEQxMpeLzw2MgBSyEz/LaiDUIGWq88+ifTwwOT6Th8LljHAU4jtXxx3QmBSh6yO/cjTsID1u68O2rVhELTKXi88NiHwUsgs/y2og0CBpptfPonU4MDk+j4fC4Yx');
+        const wrongSound = new Audio('data:audio/wav;base64,UklGRlQEAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YTAEAABAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQA==');
+        
+        let currentQuestion = 0;
+        let collectedRewards = [];
+        let answersLocked = false;
+        
+        function createSnow() {
+            const snowContainer = document.querySelector('.snow');
+            for (let i = 0; i < 30; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                snowflake.textContent = '❄';
+                snowflake.style.left = Math.random() * 100 + '%';
+                snowflake.style.animationDuration = (Math.random() * 3 + 5) + 's';
+                snowflake.style.animationDelay = Math.random() * 5 + 's';
+                snowflake.style.fontSize = (Math.random() * 10 + 10) + 'px';
+                snowflake.style.opacity = Math.random() * 0.6 + 0.3;
+                snowContainer.appendChild(snowflake);
             }
-
-            function showGiftScreen() {
-                const q = getCurrentQuestion();
-                const img = document.getElementById("giftImage");
-                img.innerHTML = `<img src="${q.image}" style="width:100%; height:100%; object-fit:cover; border-radius:12px;">`;
-                document.getElementById("giftDescription").textContent =
-                    q.description;
-                document.getElementById("giftTagline").textContent = q.tagline;
-                document.getElementById("giftBox").classList.remove("opened");
-                document.getElementById("giftContent").classList.remove("show");
-
-                showScreen("giftScreen");
-            }
-
-            function openGift() {
-                const box = document.getElementById("giftBox");
-                const content = document.getElementById("giftContent");
-
-                box.classList.add("opened");
+        }
+        
+        function renderQuestion() {
+            answersLocked = false;
+            const q = QUESTIONS[currentQuestion];
+            const progress = ((currentQuestion) / QUESTIONS.length) * 100;
+            
+            document.getElementById('gameCard').innerHTML = `
+                <h1>🎄 Christmas Quiz 🎄</h1>
+                <div class="subtitle">Trả lời đúng để nhận quà Giáng sinh!</div>
+                
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: ${progress}%"></div>
+                </div>
+                
+                <div class="question-number">CÂU HỎI ${currentQuestion + 1}/${QUESTIONS.length}</div>
+                <div class="question-text">${q.question}</div>
+                
+                <div class="answers">
+                    <button class="answer-btn" onclick="checkAnswer('A')">A. ${q.A}</button>
+                    <button class="answer-btn" onclick="checkAnswer('B')">B. ${q.B}</button>
+                    <button class="answer-btn" onclick="checkAnswer('C')">C. ${q.C}</button>
+                    <button class="answer-btn" onclick="checkAnswer('D')">D. ${q.D}</button>
+                </div>
+            `;
+        }
+        
+        function checkAnswer(answer) {
+            if (answersLocked) return;
+            answersLocked = true;
+            
+            const q = QUESTIONS[currentQuestion];
+            const buttons = document.querySelectorAll('.answer-btn');
+            const selectedButton = Array.from(buttons).find(btn => btn.textContent.startsWith(answer));
+            
+            if (answer === q.correct) {
+                correctSound.play();
+                selectedButton.classList.add('correct');
+                
                 setTimeout(() => {
-                    content.classList.add("show");
-                }, 600);
-            }
-
-            function nextQuestion() {
-                currentQuestion++;
-                if (currentQuestion < 5) {
-                    loadQuestion();
-                    showScreen("quizScreen");
-                } else if (currentQuestion === 5 && !passedWarning) {
-                    showScreen("warningScreen");
-                } else {
-                    loadQuestion();
-                    showScreen("quizScreen");
-                }
-            }
-
-            function confirmContinue() {
-                passedWarning = true;
-                loadQuestion();
-                showScreen("quizScreen");
-            }
-
-            function showFinalRewardWithWarning() {
-                showFinalRewardScreen();
-            }
-
-            function showFailed() {
-                const list = document.getElementById("collectedRewards");
-                if (collectedRewards.length > 0) {
-                    list.innerHTML = collectedRewards
-                        .map(
-                            (r, i) => `<div>Câu ${r.question}: ${r.name}</div>`,
-                        )
-                        .join("");
-                } else {
-                    list.innerHTML =
-                        "<div>Bạn chưa nhận được phần thưởng nào</div>";
-                }
-                showScreen("failedScreen");
-            }
-
-            function showFinalRewardScreen() {
-                const q = highValueQuestions[4];
-                const img = document.getElementById("finalImage");
-                img.innerHTML = `<img src="${q.image}" style="width:100%; height:100%; object-fit:cover;">`;
-                document.getElementById("finalDescription").textContent =
-                    q.description;
-                document.getElementById("finalText").textContent = q.tagline;
-                document
-                    .getElementById("epicGiftBox")
-                    .classList.remove("opened");
-                document.getElementById("epicContent").classList.remove("show");
-                document.getElementById("customImageContainer").innerHTML = "";
-                showScreen("finalRewardScreen");
-            }
-
-            function openEpicGift() {
-                const box = document.getElementById("epicGiftBox");
-                const content = document.getElementById("epicContent");
-
-                box.classList.add("opened");
+                    showReward();
+                }, 1000);
+            } else {
+                wrongSound.play();
+                selectedButton.classList.add('wrong');
+                
                 setTimeout(() => {
-                    content.classList.add("show");
+                    showExplanation(answer);
                 }, 800);
             }
-
-            function displayCustomImage() {
-                const file = document.getElementById("imageUpload").files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        const container = document.getElementById(
-                            "customImageContainer",
-                        );
-                        container.innerHTML = `<img src="${e.target.result}" class="custom-image" alt="Custom Gift">`;
-                    };
-                    reader.readAsDataURL(file);
-                }
+        }
+        
+        function showExplanation(wrongAnswer) {
+            const q = QUESTIONS[currentQuestion];
+            const card = document.getElementById('gameCard');
+            
+            card.innerHTML += `
+                <div class="explanation">
+                    <div class="explanation-title">❌ Giải thích</div>
+                    <div class="explanation-text">${q.explain[wrongAnswer]}</div>
+                </div>
+            `;
+            
+            setTimeout(() => {
+                showLoseModal();
+            }, 3000);
+        }
+        
+        function showReward() {
+            const reward = REWARDS[currentQuestion];
+            collectedRewards.push(reward);
+            
+            document.getElementById('gameCard').innerHTML = `
+                <h1>🎁 Chúc mừng! 🎁</h1>
+                <div class="subtitle">Bạn đã mở khóa phần thưởng!</div>
+                
+                <div class="reward-card">
+                    <img src="${reward.image}" alt="${reward.name}" class="reward-image" onerror="this.src='https://via.placeholder.com/240x240/1a4d2e/f4e4c1?text=Gift'">
+                    <div class="reward-name">${reward.name}</div>
+                    <button class="next-btn" onclick="nextQuestion()">
+                        ${currentQuestion < QUESTIONS.length - 1 ? 'Câu tiếp theo →' : 'Xem tất cả phần thưởng! 🎉'}
+                    </button>
+                </div>
+            `;
+        }
+        
+        function nextQuestion() {
+            currentQuestion++;
+            
+            if (currentQuestion >= QUESTIONS.length) {
+                showVictory();
+            } else {
+                renderQuestion();
             }
-
-            function goToCelebration() {
-                showScreen("celebrationScreen");
+        }
+        
+        function showVictory() {
+            createConfetti();
+            
+            let rewardsHTML = '';
+            collectedRewards.forEach(reward => {
+                rewardsHTML += `
+                    <div class="reward-item">
+                        <img src="${reward.image}" alt="${reward.name}" onerror="this.src='https://via.placeholder.com/140x100/1a4d2e/f4e4c1?text=Gift'">
+                        <div class="reward-item-name">${reward.name}</div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('gameCard').innerHTML = `
+                <div class="victory-screen">
+                    <div class="victory-title">🎄 Chúc Mừng Giáng Sinh! 🎄</div>
+                    <div class="subtitle">Bạn đã hoàn thành tất cả câu hỏi và nhận được ${collectedRewards.length} phần quà tuyệt vời!</div>
+                    
+                    <div class="rewards-grid">
+                        ${rewardsHTML}
+                    </div>
+                    
+                    <button class="next-btn" onclick="restartGame()">Chơi lại 🔄</button>
+                </div>
+            `;
+        }
+        
+        function createConfetti() {
+            const colors = ['#daa520', '#f4e4c1', '#dc2626', '#22c55e'];
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.top = -10 + 'px';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 3 + 's';
+                confetti.style.animationDuration = (Math.random() * 2 + 3) + 's';
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 5000);
             }
-
-            function resetApp() {
-                currentQuestion = 0;
-                collectedRewards = [];
-                passedWarning = false;
-                showScreen("introScreen");
-            }
-
-            function showScreen(screenId) {
-                document.querySelectorAll(".screen").forEach((screen) => {
-                    screen.classList.remove("active");
-                });
-                document.getElementById(screenId).classList.add("active");
-            }
-
-            function createSnowflakes() {
-                const container = document.body;
-                const snowflakeCount = 50;
-
-                for (let i = 0; i < snowflakeCount; i++) {
-                    const snowflake = document.createElement("div");
-                    snowflake.className = "snowflake";
-                    snowflake.textContent = "❄";
-                    snowflake.style.left =
-                        Math.random() * window.innerWidth + "px";
-                    snowflake.style.animationDuration =
-                        Math.random() * 10 + 10 + "s";
-                    snowflake.style.animationDelay = Math.random() * 2 + "s";
-                    snowflake.style.opacity = Math.random() * 0.5 + 0.3;
-                    snowflake.style.fontSize = Math.random() * 20 + 10 + "px";
-                    container.appendChild(snowflake);
-                }
-            }
-
-            createSnowflakes();
-        </script>
-    </body>
+        }
+        
+        function showLoseModal() {
+            document.getElementById('loseModal').classList.add('active');
+        }
+        
+        function restartGame() {
+            currentQuestion = 0;
+            collectedRewards = [];
+            document.getElementById('loseModal').classList.remove('active');
+            renderQuestion();
+        }
+        
+        // Initialize
+        createSnow();
+        renderQuestion();
+    </script>
+</body>
 </html>
